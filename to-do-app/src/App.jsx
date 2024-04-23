@@ -72,7 +72,7 @@ export default class App extends React.Component {
         </form>
         <p>My input : {this.state.input}</p>
         <div className="todoList">
-          <h2>⬇️🌟 L I S T 🌟⬇️</h2>
+          <h2>L I S T </h2>
 
           {this.state.todoList.length == 0 ? ( // conditional rendering
             <h3>List is Emty</h3>
