@@ -1,6 +1,6 @@
 import React from "react";
 import "./App.css";
-import TodoItem from "./component/TodoItem";
+import TodoItem from "./todoitem";
 
 export default class App extends React.Component {
   constructor() {
@@ -10,8 +10,8 @@ export default class App extends React.Component {
       todoList: [],
     };
   }
+
   inputChange = (e) => {
-    //changing the value of input in  state
     this.setState({
       input: e.target.value,
     });
@@ -19,73 +19,57 @@ export default class App extends React.Component {
 
   formSubmit = (e) => {
     e.preventDefault();
-    if (this.state.input.length > 0)
-      // if the input is emty string
+    if (this.state.input.length > 0) {
       this.setState({
         input: "",
         todoList: [...this.state.todoList, this.state.input],
       });
-  };
-
-  updateItem = (newItem, index) => {
-    // created a copy of my to do list
-    let arr = this.state.todoList;
-
-    // to  update the element
-
-    arr.splice(index, 1, newItem);
-
-    // change the state
-    this.setState({
-      todoList: arr,
-    });
+    }
   };
 
   deleteItem = (index) => {
-    let arr = this.state.todoList;
-    arr.splice(index, 1);
-
+    let updatedList = [...this.state.todoList];
+    updatedList.splice(index, 1);
     this.setState({
-      todoList: arr,
+      todoList: updatedList,
     });
   };
-  componentDidUpdate(){
-    console.log(this.state);
 
-  }
+  updateItem = (newItem, index) => {
+    let updatedList = [...this.state.todoList];
+    updatedList[index] = newItem;
+    this.setState({
+      todoList: updatedList,
+    });
+  };
+
   render() {
-    let buttonStyle = {
-      backgroundColor: "red",
-      borderRadius: "25px",
-      fontWeight: "bolder",
-    };
     return (
       <>
-        <h1>TODO LIST</h1>
-        <form onSubmit={this.formSubmit}>
+        <h1> TO DO LIST </h1>
+        <form action="" onSubmit={this.formSubmit}>
           <input
             type="text"
             onChange={this.inputChange}
             value={this.state.input}
           />
-          <button>A D D</button>
+          <button className="shine-btn">ADD</button>
         </form>
-        <p>My input : {this.state.input}</p>
+        <p>{this.state.input}</p>
         <div className="todoList">
-          <h2>L I S T </h2>
-
-          {this.state.todoList.length == 0 ? ( // conditional rendering
-            <h3>List is Emty</h3>
+          <h2> YOUR'S  LIST </h2>
+          {this.state.todoList.length === 0 ? (
+            <h3>The list is empty. Please make a list!</h3>
           ) : (
-            this.state.todoList.map((e, i) => {
-              return <TodoItem
+            this.state.todoList.map((e, i) => (
+              <TodoItem
+                key={i}
                 e={e}
-                i={i}
+                index={i}
                 deleteItem={this.deleteItem}
                 updateItem={this.updateItem}
-                style={buttonStyle}
-              />;
-            })
+              />
+            ))
           )}
         </div>
       </>
